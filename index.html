@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HK Trip 2025 Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-slate-800">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        const Icons = {
+            Utensils: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" /><path d="M7 2v20" /><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" /></svg>,
+            ShoppingBag: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" /><path d="M3 6h18" /><path d="M16 10a4 4 0 0 1-8 0" /></svg>,
+            ChevronRight: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m9 18 6-6-6-6" /></svg>,
+        };
+
+        const HongKongTrip = () => {
+            const [activeTab, setActiveTab] = useState('schedule');
+            const [collapsedDays, setCollapsedDays] = useState([]);
+
+            const toggleDay = (day) => {
+                setCollapsedDays(prev =>
+                    prev.includes(day) ? prev.filter(d => d !== day) : [...prev, day]
+                );
+            };
+
+            const schedule = [
+                {
+                    day: 1, date: '16', weekday: 'Tuesday',
+                    events: [
+                        { time: 'AM', activity: 'Davis Crew Arrives', type: 'travel' },
+                        { time: 'Lunch', activity: 'Free Time / Check-in', type: 'leisure' },
+                        { time: 'PM', activity: 'San Diego Squad arrives', type: 'travel' },
+                        { time: 'Dinner', activity: '', type: 'leisure' },
+                        { time: 'Evening', activity: '', type: 'leisure' },
+                    ]
+                },
+                {
+                    day: 2, date: '17', weekday: 'Wednesday',
+                    events: [
+                        { time: 'AM', activity: '', type: 'leisure' },
+                        { time: 'Lunch', activity: 'Cafe 103', reservationTime: '12:00 PM', type: 'food', highlight: true },
+                        { time: 'PM', activity: 'Mong Kok/TST', type: 'leisure' },
+                        { time: 'Dinner', activity: '', type: 'leisure' },
+                        { time: 'Evening', activity: 'Avenue of Stars', type: 'sightseeing' },
+                    ]
+                },
+                {
+                    day: 3, date: '18', weekday: 'Thursday',
+                    events: [
+                        { time: 'AM', activity: 'Victoria Peak', reservationTime: '7:30 AM+', type: 'sightseeing', highlight: true },
+                        { time: 'Lunch', activity: 'Mira Dim Sum', reservationTime: '12:30 PM', type: 'food', highlight: true },
+                        { time: 'PM', activity: 'Mong Kok/TST', type: 'leisure' },
+                        { time: 'Dinner', activity: '', type: 'leisure' },
+                        { time: 'Evening', activity: 'Temple Street Night Market', type: 'sightseeing' },
+                    ]
+                },
+                {
+                    day: 4, date: '19', weekday: 'Friday',
+                    events: [
+                        { time: 'AM', activity: 'Monastery', reservationTime: '10:00 AM', type: 'sightseeing', highlight: true },
+                        { time: 'Lunch', activity: 'Tai Po Market Lunch', type: 'food' },
+                        { time: 'PM', activity: 'Lam Tsuen Village Adventure', type: 'sightseeing' },
+                        { time: 'Dinner', activity: '', type: 'leisure' },
+                        { time: 'Evening', activity: '', type: 'leisure' },
+                    ]
+                },
+                {
+                    day: 5, date: '20', weekday: 'Saturday',
+                    events: [
+                        { time: 'AM', activity: '', type: 'leisure' },
+                        { time: 'Lunch', activity: 'Tai Wai Dining Room Dim Sum', type: 'food', highlight: true },
+                        { time: 'PM', activity: '', type: 'leisure' },
+                        { time: 'Dinner', activity: 'Hot Pot Night', type: 'food' },
+                        { time: 'Evening', activity: '', type: 'leisure' },
+                    ]
+                },
+                {
+                    day: 6, date: '21', weekday: 'Sunday',
+                    events: [
+                        { time: 'AM', activity: 'Free Time / Packing', type: 'leisure' },
+                        { time: 'Lunch', activity: '', type: 'food' },
+                        { time: 'PM', activity: 'Depart', type: 'travel' },
+                        { time: 'Dinner', activity: '-', type: 'none' },
+                        { time: 'Evening', activity: '-', type: 'none' },
+                    ]
+                }
+            ];
+
+            const extras = {
+                food: [
+                    { name: "Din Tai Fung (XLB)", location: "Causeway Bay / TST" },
+                    { name: "All Day Chicken Lab", location: "Mong Kok / North Point" },
+                    { name: "Mak's Noodles (Wonton Noodle Soup)", location: "TST" },
+                    { name: "Classic Cha Chan Teng", location: "Anywhere" },
+                    { name: "Lau Fau Shan (Seafood)", location: "New Territories" }
+                ],
+                shopping: [
+                    { name: "Feverguy (Wotencraft Bags)", location: "Causeway Bay" },
+                    { name: "LAKH Supply (Utility Wear)", location: "Causeway Bay / Mong Kok" },
+                    { name: "Hellolulu (Bags)", location: "Kwun Tong / Mong Kok" },
+                    { name: "The Forest (Sneakers/Streetwear)", location: "Mong Kok" },
+                    { name: "Topologie (Bags)", location: "Mong Kok / TST" },
+                    { name: "Doughnut Bags", location: "Sham Shui Po / Mong Kok" },
+                    { name: "Golden Computer Arcade", location: "Sham Shui Po" },
+                    { name: "Sim City", location: "Mong Kok" }
+                ]
+            };
+
+            const timeEmojis = {
+                'AM': '☀️',
+                'Lunch': '🥢',
+                'PM': '🏙️',
+                'Dinner': '🍽️',
+                'Evening': '🌙'
+            };
+
+            const getTypeColor = (type) => {
+                switch (type) {
+                    case 'food': return 'bg-orange-100 text-orange-800 border-orange-200';
+                    case 'sightseeing': return 'bg-emerald-100 text-emerald-800 border-emerald-200';
+                    case 'travel': return 'bg-blue-100 text-blue-800 border-blue-200';
+                    case 'leisure': return 'bg-gray-100 text-gray-600 border-gray-200';
+                    default: return 'bg-gray-50 text-gray-400 border-gray-100';
+                }
+            };
+
+            const EventCard = ({ event }) => (
+                <div className={`p-3 rounded-lg border text-sm flex flex-col justify-between h-full transition-all hover:scale-[1.02] hover:shadow-md ${getTypeColor(event.type)}`}>
+                    <div>
+                        <span className="text-[10px] uppercase font-bold opacity-60 tracking-wide mb-1 block">{timeEmojis[event.time]} {event.time}</span>
+                        <span className="leading-tight font-medium block">{event.activity}</span>
+                    </div>
+                    {event.reservationTime && (
+                        <div className="mt-2 pt-1 border-t border-black/10">
+                            <div className="flex items-center gap-1 text-xs font-bold opacity-90">
+                                <span className="text-[10px]">⏰</span> {event.reservationTime}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+
+            return (
+                <div className="min-h-screen bg-gray-50 text-slate-800 font-sans pb-20">
+                    <header className="bg-white border-b border-gray-200 sticky top-0 z-30 shadow-sm safe-top">
+                        <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                                <div className="bg-red-600 text-white p-1.5 rounded-lg font-bold text-lg">HK 香港</div>
+                                <h1 className="font-bold text-xl tracking-tight">Trip 2025</h1>
+                            </div>
+                            <nav className="flex gap-2">
+                                {['schedule', 'food', 'shopping', 'phrases'].map((tab) => (
+                                    <button
+                                        key={tab}
+                                        onClick={() => setActiveTab(tab)}
+                                        className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${activeTab === tab ? 'bg-slate-800 text-white shadow-md' : 'text-slate-500 hover:bg-gray-100'
+                                            }`}
+                                    >
+                                        {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                                    </button>
+                                ))}
+                            </nav>
+                        </div>
+                    </header>
+
+                    <main className="max-w-6xl mx-auto px-4 py-8">
+                        {activeTab === 'schedule' && (
+                            <div className="space-y-8 animate-fade-in">
+                                <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-4">
+                                    <div>
+                                        <h2 className="text-2xl font-bold text-slate-900">Weekly Itinerary</h2>
+                                        <p className="text-slate-500">December 16 - 21</p>
+                                    </div>
+                                    <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs font-medium text-slate-500">
+                                        <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-orange-400"></span>Food</span>
+                                        <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-emerald-400"></span>Sightseeing</span>
+                                    </div>
+                                </div>
+
+                                <div className="hidden md:grid grid-cols-6 grid-flow-col gap-x-4 gap-y-2 grid-rows-[auto_repeat(5,1fr)]">
+                                    {schedule.map((day) => (
+                                        <React.Fragment key={day.day}>
+                                            <div className={`p-3 rounded-xl border text-center flex flex-col justify-center ${day.weekday === 'Sunday' || day.weekday === 'Saturday' ? 'bg-red-50 border-red-100' : 'bg-white border-gray-200'}`}>
+                                                <div className="text-xs font-bold uppercase tracking-wider text-slate-400">{day.weekday.substring(0, 3)}</div>
+                                                <div className="text-2xl font-black text-slate-800">{day.date}</div>
+                                            </div>
+                                            {day.events.map((event, idx) => (
+                                                <EventCard key={idx} event={event} />
+                                            ))}
+                                        </React.Fragment>
+                                    ))}
+                                </div>
+
+                                <div className="md:hidden flex flex-col gap-4">
+                                    {schedule.map((day) => (
+                                        <div key={day.day} className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                                            <div onClick={() => toggleDay(day.day)} className="p-4 flex items-center justify-between cursor-pointer bg-slate-50 active:bg-slate-100">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="bg-red-600 text-white w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg shadow-sm">{day.date}</div>
+                                                    <div>
+                                                        <div className="font-bold text-slate-800">{day.weekday}</div>
+                                                    </div>
+                                                </div>
+                                                <Icons.ChevronRight className={`w-5 h-5 text-gray-400 transition-transform ${!collapsedDays.includes(day.day) ? 'rotate-90' : ''}`} />
+                                            </div>
+                                            <div className={`transition-all duration-300 overflow-hidden ${!collapsedDays.includes(day.day) ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                                                <div className="p-4 pt-0 grid gap-3 mt-3">
+                                                    {day.events.map((event, idx) => (
+                                                        <div key={idx} className="flex gap-4 items-start">
+                                                            <div className="w-16 text-[10px] font-bold text-slate-400 uppercase pt-1 text-right">{timeEmojis[event.time]} {event.time}</div>
+                                                            <div className={`flex-1 p-3 rounded-lg text-sm border ${getTypeColor(event.type)}`}>
+                                                                <div className="font-medium">{event.activity}</div>
+                                                                {event.reservationTime && (
+                                                                    <div className="mt-2 pt-1 border-t border-black/10 text-xs font-bold opacity-90 flex items-center gap-1">
+                                                                        <span>⏰</span> {event.reservationTime}
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === 'food' && (
+                            <div className="animate-fade-in">
+                                <div className="bg-orange-50 rounded-2xl p-6 border border-orange-100">
+                                    <div className="flex items-center gap-3 mb-6">
+                                        <div className="bg-orange-500 text-white p-2 rounded-lg"><Icons.Utensils className="w-5 h-5" /></div>
+                                        <div><h2 className="text-xl font-bold text-slate-800">Must Eats</h2><p className="text-orange-600 text-sm font-medium">Extra Credit Missions</p></div>
+                                    </div>
+                                    <ul className="space-y-3">
+                                        {extras.food.map((item, idx) => (
+                                            <li key={idx} className="flex items-center gap-3 bg-white p-3 rounded-xl shadow-sm border border-orange-100">
+                                                <div className="w-6 h-6 rounded-full border-2 border-orange-200 flex items-center justify-center shrink-0"><div className="w-3 h-3 rounded-full bg-orange-400 opacity-20"></div></div>
+                                                <div>
+                                                    <span className="text-slate-700 font-medium block">{item.name}</span>
+                                                    <span className="text-xs text-orange-400 font-bold uppercase tracking-wide">{item.location}</span>
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeTab === 'shopping' && (
+                            <div className="animate-fade-in">
+                                <div className="bg-blue-50 rounded-2xl p-6 border border-blue-100">
+                                    <div className="flex items-center gap-3 mb-6">
+                                        <div className="bg-blue-600 text-white p-2 rounded-lg"><Icons.ShoppingBag className="w-5 h-5" /></div>
+                                        <div><h2 className="text-xl font-bold text-slate-800">Shopping</h2><p className="text-blue-600 text-sm font-medium">Bags & Streetwear</p></div>
+                                    </div>
+                                    <ul className="space-y-3">
+                                        {extras.shopping.map((item, idx) => (
+                                            <li key={idx} className="flex items-center gap-3 bg-white p-3 rounded-xl shadow-sm border border-blue-100">
+                                                <div className="w-6 h-6 rounded-full border-2 border-blue-200 flex items-center justify-center shrink-0"><div className="w-3 h-3 rounded-full bg-blue-400 opacity-20"></div></div>
+                                                <div>
+                                                    <span className="text-slate-700 font-medium block">{item.name}</span>
+                                                    <span className="text-xs text-blue-400 font-bold uppercase tracking-wide">{item.location}</span>
+                                                </div>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
+                        )}
+                        {activeTab === 'phrases' && (
+                            <div className="grid md:grid-cols-2 gap-6 animate-fade-in">
+                                <div className="bg-emerald-50 rounded-2xl p-6 border border-emerald-100">
+                                    <h2 className="text-xl font-bold text-slate-800 mb-4">Essential Greetings</h2>
+                                    <div className="space-y-3">
+                                        <div className="bg-white p-3 rounded-xl border border-emerald-100 flex justify-between items-center">
+                                            <div><span className="block font-bold text-slate-700">Hello</span><span className="text-xs text-slate-400">Lei Hou</span></div>
+                                            <div className="text-xl">你好</div>
+                                        </div>
+                                        <div className="bg-white p-3 rounded-xl border border-emerald-100 flex justify-between items-center">
+                                            <div><span className="block font-bold text-slate-700">Thank You (Service)</span><span className="text-xs text-slate-400">M Goi</span></div>
+                                            <div className="text-xl">唔該</div>
+                                        </div>
+                                        <div className="bg-white p-3 rounded-xl border border-emerald-100 flex justify-between items-center">
+                                            <div><span className="block font-bold text-slate-700">Thank You (Gift)</span><span className="text-xs text-slate-400">Do Jeh</span></div>
+                                            <div className="text-xl">多謝</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="bg-purple-50 rounded-2xl p-6 border border-purple-100">
+                                    <h2 className="text-xl font-bold text-slate-800 mb-4">Dining & Shopping</h2>
+                                    <div className="space-y-3">
+                                        <div className="bg-white p-3 rounded-xl border border-purple-100 flex justify-between items-center">
+                                            <div><span className="block font-bold text-slate-700">Delicious</span><span className="text-xs text-slate-400">Hou Sik</span></div>
+                                            <div className="text-xl">好食</div>
+                                        </div>
+                                        <div className="bg-white p-3 rounded-xl border border-purple-100 flex justify-between items-center">
+                                            <div><span className="block font-bold text-slate-700">Bill Please</span><span className="text-xs text-slate-400">Mai Dan</span></div>
+                                            <div className="text-xl">埋單</div>
+                                        </div>
+                                        <div className="bg-white p-3 rounded-xl border border-purple-100 flex justify-between items-center">
+                                            <div><span className="block font-bold text-slate-700">How Much?</span><span className="text-xs text-slate-400">Gei Do Chin</span></div>
+                                            <div className="text-xl">幾多錢</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </main>
+                    <footer className="max-w-6xl mx-auto px-4 py-8 text-center text-slate-400 text-sm"><p>Hong Kong Trip Planning 2025</p></footer>
+                </div>
+            );
+        };
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<HongKongTrip />);
+    </script>
+</body>
+
+</html>
