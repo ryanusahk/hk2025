@@ -35,6 +35,9 @@
             Utensils: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" /><path d="M7 2v20" /><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" /></svg>,
             ShoppingBag: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" /><path d="M3 6h18" /><path d="M16 10a4 4 0 0 1-8 0" /></svg>,
             ChevronRight: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="m9 18 6-6-6-6" /></svg>,
+            Calendar: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><rect width="18" height="18" x="3" y="4" rx="2" ry="2" /><line x1="16" x2="16" y1="2" y2="6" /><line x1="8" x2="8" y1="2" y2="6" /><line x1="3" x2="21" y1="10" y2="10" /></svg>,
+            MessageCircle: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" /></svg>,
+            MapPin: (props) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>,
         };
 
         const HongKongTrip = () => {
@@ -112,21 +115,21 @@
 
             const extras = {
                 food: [
-                    { name: "Din Tai Fung (XLB)", location: "Causeway Bay / TST" },
-                    { name: "All Day Chicken Lab", location: "Mong Kok / North Point" },
-                    { name: "Mak's Noodles (Wonton Noodle Soup)", location: "TST" },
-                    { name: "Classic Cha Chan Teng", location: "Anywhere" },
-                    { name: "Lau Fau Shan (Seafood)", location: "New Territories" }
+                    { name: "Din Tai Fung", genre: "XLB (Soup Dumplings)", location: "Causeway Bay / TST" },
+                    { name: "All Day Chicken Lab", genre: "Hainan Chicken Rice", location: "Mong Kok / North Point" },
+                    { name: "Mak's Noodles", genre: "Wonton Noodle Soup", location: "TST" },
+                    { name: "Classic Cha Chan Teng", genre: "Hong Kong Style Cafe", location: "Anywhere" },
+                    { name: "Lau Fau Shan", genre: "Fresh Seafood Market", location: "New Territories" }
                 ],
                 shopping: [
-                    { name: "Feverguy (Wotencraft Bags)", location: "Causeway Bay" },
-                    { name: "LAKH Supply (Utility Wear)", location: "Causeway Bay / Mong Kok" },
-                    { name: "Hellolulu (Bags)", location: "Kwun Tong / Mong Kok" },
-                    { name: "The Forest (Sneakers/Streetwear)", location: "Mong Kok" },
-                    { name: "Topologie (Bags)", location: "Mong Kok / TST" },
-                    { name: "Doughnut Bags", location: "Sham Shui Po / Mong Kok" },
-                    { name: "Golden Computer Arcade", location: "Sham Shui Po" },
-                    { name: "Sim City", location: "Mong Kok" }
+                    { name: "Feverguy", genre: "Wotencraft / Camera Bags", location: "10 Pak Sha Road (CWB)" },
+                    { name: "LAKH Supply", genre: "Utility Wear / Cargo Pants", location: "59 Russell St (CWB) / Gala Place (Mong Kok)" },
+                    { name: "Hellolulu", genre: "Lifestyle Bags", location: "APM (Kwun Tong) / T.O.P (Mong Kok)" },
+                    { name: "The Forest", genre: "Sneakers & Streetwear Hub", location: "17 Nelson St (Mong Kok)" },
+                    { name: "Topologie", genre: "Phone Straps & Bags", location: "K11 Musea (TST) / Langham Place (Mong Kok)" },
+                    { name: "Doughnut Bags", genre: "Backpacks & Luggage", location: "68 Fuk Wa St (SSP) / Langham Place (Mong Kok)" },
+                    { name: "Golden Computer Arcade", genre: "Tech & Gaming", location: "Sham Shui Po" },
+                    { name: "Sim City", genre: "Cameras & Photography", location: "Mong Kok" }
                 ]
             };
 
@@ -172,8 +175,8 @@
                                 <div className="bg-red-600 text-white p-1.5 rounded-lg font-bold text-lg">HK 香港</div>
                                 <h1 className="font-bold text-xl tracking-tight">Trip 2025</h1>
                             </div>
-                            <nav className="flex gap-2">
-                                {['schedule', 'food', 'shopping', 'phrases'].map((tab) => (
+                            <nav className="hidden md:flex gap-2">
+                                {['schedule', 'food', 'shopping', 'phrases', 'address'].map((tab) => (
                                     <button
                                         key={tab}
                                         onClick={() => setActiveTab(tab)}
@@ -187,7 +190,7 @@
                         </div>
                     </header>
 
-                    <main className="max-w-6xl mx-auto px-4 py-8">
+                    <main className="max-w-6xl mx-auto px-4 py-8 pb-24 md:pb-8">
                         {activeTab === 'schedule' && (
                             <div className="space-y-8 animate-fade-in">
                                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-4">
@@ -259,11 +262,12 @@
                                     </div>
                                     <ul className="space-y-3">
                                         {extras.food.map((item, idx) => (
-                                            <li key={idx} className="flex items-center gap-3 bg-white p-3 rounded-xl shadow-sm border border-orange-100">
-                                                <div className="w-6 h-6 rounded-full border-2 border-orange-200 flex items-center justify-center shrink-0"><div className="w-3 h-3 rounded-full bg-orange-400 opacity-20"></div></div>
-                                                <div>
-                                                    <span className="text-slate-700 font-medium block">{item.name}</span>
-                                                    <span className="text-xs text-orange-400 font-bold uppercase tracking-wide">{item.location}</span>
+                                            <li key={idx} className="flex items-start gap-3 bg-white p-4 rounded-xl shadow-sm border border-orange-100">
+                                                <div className="w-8 h-8 rounded-full border-2 border-orange-200 flex items-center justify-center shrink-0 mt-1"><div className="w-4 h-4 rounded-full bg-orange-400 opacity-20"></div></div>
+                                                <div className="flex flex-col gap-0.5">
+                                                    <span className="text-slate-800 font-bold text-lg leading-tight">{item.name}</span>
+                                                    <span className="text-slate-500 font-medium text-sm">{item.genre}</span>
+                                                    <span className="text-xs text-orange-500 font-bold uppercase tracking-wide mt-1">{item.location}</span>
                                                 </div>
                                             </li>
                                         ))}
@@ -281,11 +285,12 @@
                                     </div>
                                     <ul className="space-y-3">
                                         {extras.shopping.map((item, idx) => (
-                                            <li key={idx} className="flex items-center gap-3 bg-white p-3 rounded-xl shadow-sm border border-blue-100">
-                                                <div className="w-6 h-6 rounded-full border-2 border-blue-200 flex items-center justify-center shrink-0"><div className="w-3 h-3 rounded-full bg-blue-400 opacity-20"></div></div>
-                                                <div>
-                                                    <span className="text-slate-700 font-medium block">{item.name}</span>
-                                                    <span className="text-xs text-blue-400 font-bold uppercase tracking-wide">{item.location}</span>
+                                            <li key={idx} className="flex items-start gap-3 bg-white p-4 rounded-xl shadow-sm border border-blue-100">
+                                                <div className="w-8 h-8 rounded-full border-2 border-blue-200 flex items-center justify-center shrink-0 mt-1"><div className="w-4 h-4 rounded-full bg-blue-400 opacity-20"></div></div>
+                                                <div className="flex flex-col gap-0.5">
+                                                    <span className="text-slate-800 font-bold text-lg leading-tight">{item.name}</span>
+                                                    <span className="text-slate-500 font-medium text-sm">{item.genre}</span>
+                                                    <span className="text-xs text-blue-500 font-bold uppercase tracking-wide mt-1">{item.location}</span>
                                                 </div>
                                             </li>
                                         ))}
@@ -331,8 +336,37 @@
                                 </div>
                             </div>
                         )}
+                        {activeTab === 'address' && (
+                            <div className="animate-fade-in flex flex-col items-center justify-center min-h-[50vh] text-center space-y-8">
+                                <div className="p-8 bg-white rounded-3xl shadow-sm border border-slate-100 w-full max-w-md">
+                                    <div className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-2">Address</div>
+                                    <h2 className="text-4xl font-black text-slate-900 mb-4 leading-tight">Middle Road<br />TST</h2>
+                                    <div className="h-px w-20 bg-slate-200 mx-auto my-6"></div>
+                                    <h2 className="text-4xl font-black text-slate-900 leading-tight">尖沙咀<br />中間道</h2>
+                                </div>
+                            </div>
+                        )}
                     </main>
-                    <footer className="max-w-6xl mx-auto px-4 py-8 text-center text-slate-400 text-sm"><p>Hong Kong Trip Planning 2025</p></footer>
+
+
+                    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-6 py-2 pb-safe z-40 flex justify-between items-center shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+                        {[
+                            { id: 'schedule', icon: Icons.Calendar, label: 'Schedule' },
+                            { id: 'food', icon: Icons.Utensils, label: 'Food' },
+                            { id: 'shopping', icon: Icons.ShoppingBag, label: 'Shop' },
+                            { id: 'phrases', icon: Icons.MessageCircle, label: 'Phrases' },
+                            { id: 'address', icon: Icons.MapPin, label: 'Address' }
+                        ].map((tab) => (
+                            <button
+                                key={tab.id}
+                                onClick={() => setActiveTab(tab.id)}
+                                className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all ${activeTab === tab.id ? 'text-slate-800' : 'text-slate-400 hover:bg-gray-50'}`}
+                            >
+                                <tab.icon className={`w-6 h-6 ${activeTab === tab.id ? 'stroke-[2.5px]' : 'stroke-2'}`} />
+                                <span className={`text-[10px] font-medium ${activeTab === tab.id ? 'font-bold' : ''}`}>{tab.label}</span>
+                            </button>
+                        ))}
+                    </div>
                 </div>
             );
         };
