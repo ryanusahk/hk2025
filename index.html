@@ -314,6 +314,10 @@
                                     <button
                                         key={tab}
                                         onClick={() => setActiveTab(tab)}
+                                        onTouchStart={(e) => {
+                                            e.preventDefault();
+                                            setActiveTab(tab);
+                                        }}
                                         className={`px-4 py-1.5 rounded-xl text-sm font-semibold transition-all duration-300 ease-out ${activeTab === tab
                                             ? 'bg-slate-800 text-white'
                                             : 'text-slate-500 hover:bg-slate-100 hover:text-slate-700'
@@ -523,6 +527,10 @@
                             <button
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
+                                onTouchStart={(e) => {
+                                    e.preventDefault();
+                                    setActiveTab(tab.id);
+                                }}
                                 className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all duration-300 ${activeTab === tab.id ? 'text-slate-800' : 'text-slate-400 hover:bg-slate-100 hover:text-slate-600'}`}
                             >
                                 <tab.icon className={`w-6 h-6 transition-all ${activeTab === tab.id ? 'stroke-[2.5px]' : 'stroke-2'}`} />
