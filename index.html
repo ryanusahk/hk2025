@@ -5,13 +5,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HK Trip 2025 Dashboard</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@700;800;900&family=Noto+Sans+SC:wght@400;700;900&display=swap"
+        rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                        display: ['Outfit', 'Inter', 'system-ui', 'sans-serif'],
+                        chinese: ['Noto Sans SC', 'system-ui', 'sans-serif']
+                    },
+                    colors: {
+                        coral: {
+                            50: 'hsl(20, 80%, 96%)',
+                            100: 'hsl(20, 75%, 92%)',
+                            200: 'hsl(20, 70%, 85%)',
+                            500: 'hsl(16, 85%, 60%)',
+                            600: 'hsl(16, 85%, 52%)',
+                            800: 'hsl(16, 75%, 35%)',
+                        },
+                        ocean: {
+                            50: 'hsl(215, 75%, 96%)',
+                            100: 'hsl(215, 70%, 92%)',
+                            200: 'hsl(215, 65%, 85%)',
+                            500: 'hsl(215, 75%, 55%)',
+                            600: 'hsl(215, 80%, 48%)',
+                        },
+                        jade: {
+                            50: 'hsl(160, 60%, 96%)',
+                            100: 'hsl(160, 55%, 92%)',
+                            200: 'hsl(160, 50%, 85%)',
+                            500: 'hsl(160, 50%, 45%)',
+                            600: 'hsl(160, 55%, 38%)',
+                            800: 'hsl(160, 50%, 30%)',
+                        },
+                        neon: {
+                            magenta: 'hsl(320, 100%, 60%)',
+                            cyan: 'hsl(185, 100%, 60%)',
+                        },
+                        hk: {
+                            red: '#C41E3A',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            font-feature-settings: 'tnum' on, 'lnum' on;
+        }
+
+        .font-display {
+            font-family: 'Outfit', 'Inter', system-ui, sans-serif;
+        }
+
+        .font-chinese {
+            font-family: 'Noto Sans SC', system-ui, sans-serif;
         }
 
         .no-scrollbar::-webkit-scrollbar {
@@ -21,6 +82,43 @@
         .no-scrollbar {
             -ms-overflow-style: none;
             scrollbar-width: none;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card-shadow {
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+        }
+
+        .card-shadow-lg {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fade-in 0.4s ease-out;
         }
     </style>
 </head>
@@ -166,23 +264,23 @@
 
             const getTypeColor = (type) => {
                 switch (type) {
-                    case 'food': return 'bg-orange-100 text-orange-800 border-orange-200';
-                    case 'sightseeing': return 'bg-emerald-100 text-emerald-800 border-emerald-200';
-                    case 'travel': return 'bg-blue-100 text-blue-800 border-blue-200';
-                    case 'leisure': return 'bg-gray-100 text-gray-600 border-gray-200';
-                    default: return 'bg-gray-50 text-gray-400 border-gray-100';
+                    case 'food': return 'bg-coral-100 text-coral-800 border-coral-200';
+                    case 'sightseeing': return 'bg-jade-100 text-jade-800 border-jade-200';
+                    case 'travel': return 'bg-ocean-100 text-ocean-600 border-ocean-200';
+                    case 'leisure': return 'bg-slate-100 text-slate-600 border-slate-200';
+                    default: return 'bg-slate-50 text-slate-400 border-slate-100';
                 }
             };
 
             const EventCard = ({ event }) => (
-                <div className={`p-3 rounded-lg border text-sm flex flex-col justify-between h-full transition-transform active:scale-95 duration-200 ease-out ${getTypeColor(event.type)}`}>
+                <div className={`p-3 rounded-xl border text-sm flex flex-col justify-between h-full transition-all active:scale-[0.97] duration-300 ease-out hover:shadow-md ${getTypeColor(event.type)}`}>
                     <div>
-                        <span className="text-[10px] uppercase font-bold opacity-60 tracking-wide mb-1 block">{timeEmojis[event.time]} {event.time}</span>
-                        <span className="leading-tight font-medium block">{event.activity}</span>
+                        <span className="text-[10px] uppercase font-extrabold opacity-60 tracking-wide mb-1 block tabular-nums">{timeEmojis[event.time]} {event.time}</span>
+                        <span className="leading-tight font-semibold block">{event.activity}</span>
                     </div>
                     {event.reservationTime && (
                         <div className="mt-2 pt-1 border-t border-black/10">
-                            <div className="flex items-center gap-1 text-xs font-bold opacity-90">
+                            <div className="flex items-center gap-1 text-xs font-bold opacity-90 tabular-nums">
                                 <span className="text-[10px]">⏰</span> {event.reservationTime}
                             </div>
                         </div>
@@ -197,13 +295,13 @@
                             {ds.emoji}
                         </div>
                     ))}
-                    <header className="bg-white/80 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-30 shadow-sm safe-top">
+                    <header className="glass-effect border-b border-gray-200/50 sticky top-0 z-30 safe-top" style={{ boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03)' }}>
                         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                                <div className="bg-slate-900 text-white w-10 h-10 rounded-xl flex items-center justify-center font-black text-sm shadow-md">HK</div>
+                                <div className="bg-gradient-to-br from-slate-800 to-slate-900 text-white w-10 h-10 rounded-xl flex items-center justify-center font-black text-sm" style={{ boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.15), 0 2px 4px -1px rgba(0, 0, 0, 0.1)' }}>HK</div>
                                 <div className="flex flex-col justify-center">
-                                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 leading-none mb-0.5">Trip Dashboard</span>
-                                    <span className="font-bold text-lg text-slate-900 tracking-tight leading-none">Hong Kong '25</span>
+                                    <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-slate-400 leading-none mb-0.5">Trip Dashboard</span>
+                                    <span className="font-display font-extrabold text-lg gradient-text tracking-tight leading-tight overflow-visible" style={{ letterSpacing: '-0.02em' }}>Hong Kong '25</span>
                                 </div>
                             </div>
                             <nav className="hidden md:flex gap-2">
@@ -211,8 +309,13 @@
                                     <button
                                         key={tab}
                                         onClick={() => setActiveTab(tab)}
-                                        className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${activeTab === tab ? 'bg-slate-800 text-white shadow-md' : 'text-slate-500 hover:bg-gray-100'
+                                        className={`px-4 py-1.5 rounded-xl text-sm font-semibold transition-all duration-300 ease-out ${activeTab === tab
+                                            ? 'bg-slate-800 text-white'
+                                            : 'text-slate-500 hover:bg-slate-100 hover:text-slate-700'
                                             }`}
+                                        style={activeTab === tab ? {
+                                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.08)'
+                                        } : {}}
                                     >
                                         {tab.charAt(0).toUpperCase() + tab.slice(1)}
                                     </button>
@@ -226,8 +329,8 @@
                             <div className="space-y-8 animate-fade-in">
                                 <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-4">
                                     <div>
-                                        <h2 className="text-2xl font-bold text-slate-900">Weekly Itinerary</h2>
-                                        <p className="text-slate-500">December 16 - 21</p>
+                                        <h2 className="font-display text-3xl font-extrabold text-slate-900" style={{ letterSpacing: '-0.02em' }}>Weekly Itinerary</h2>
+                                        <p className="text-slate-500 font-medium mt-1 tabular-nums">December 16 - 21</p>
                                     </div>
                                     <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs font-medium text-slate-500">
                                         <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-orange-400"></span>Food</span>
@@ -235,12 +338,12 @@
                                     </div>
                                 </div>
 
-                                <div className="hidden md:grid grid-cols-6 grid-flow-col gap-x-4 gap-y-2 grid-rows-[auto_repeat(5,1fr)] bg-white p-6 rounded-2xl shadow-lg border border-slate-200">
+                                <div className="hidden md:grid grid-cols-6 grid-flow-col gap-x-4 gap-y-2 grid-rows-[auto_repeat(5,1fr)] bg-white p-6 rounded-2xl border border-slate-200 card-shadow-lg">
                                     {schedule.map((day) => (
                                         <React.Fragment key={day.day}>
-                                            <div className={`p-3 rounded-xl border text-center flex flex-col justify-center ${day.weekday === 'Sunday' || day.weekday === 'Saturday' ? 'bg-red-50 border-red-100' : 'bg-white border-gray-200'}`}>
-                                                <div className="text-xs font-bold uppercase tracking-wider text-slate-400">{day.weekday.substring(0, 3)}</div>
-                                                <div className="text-2xl font-black text-slate-800">{day.date}</div>
+                                            <div className={`p-3 rounded-xl border text-center flex flex-col justify-center ${day.weekday === 'Sunday' || day.weekday === 'Saturday' ? 'bg-gradient-to-br from-red-50 to-rose-50 border-red-200' : 'bg-white border-slate-200'}`}>
+                                                <div className="text-xs font-extrabold uppercase tracking-wider text-slate-400">{day.weekday.substring(0, 3)}</div>
+                                                <div className="font-display text-2xl font-black text-slate-800 tabular-nums">{day.date}</div>
                                             </div>
                                             {day.events.map((event, idx) => (
                                                 <EventCard key={idx} event={event} />
@@ -251,10 +354,10 @@
 
                                 <div className="md:hidden flex flex-col gap-4">
                                     {schedule.map((day) => (
-                                        <div key={day.day} className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-lg">
+                                        <div key={day.day} className="bg-white rounded-xl border border-slate-200 overflow-hidden card-shadow-lg">
                                             <div onClick={() => toggleDay(day.day)} className="p-4 flex items-center justify-between cursor-pointer bg-slate-50 active:bg-slate-100">
                                                 <div className="flex items-center gap-3">
-                                                    <div className="bg-red-600 text-white w-10 h-10 rounded-lg flex items-center justify-center font-bold text-lg shadow-sm">{day.date}</div>
+                                                    <div className="bg-gradient-to-br from-hk-red to-red-700 text-white w-10 h-10 rounded-xl flex items-center justify-center font-display font-black text-lg tabular-nums" style={{ boxShadow: '0 4px 6px -1px rgba(196, 30, 58, 0.3)' }}>{day.date}</div>
                                                     <div>
                                                         <div className="font-bold text-slate-800">{day.weekday}</div>
                                                     </div>
@@ -265,8 +368,8 @@
                                                 <div className="p-4 pt-0 grid gap-3 mt-3">
                                                     {day.events.map((event, idx) => (
                                                         <div key={idx} className="flex gap-4 items-start">
-                                                            <div className="w-16 text-[10px] font-bold text-slate-400 uppercase pt-1 text-right">{timeEmojis[event.time]} {event.time}</div>
-                                                            <div className={`flex-1 p-3 rounded-lg text-sm border ${getTypeColor(event.type)}`}>
+                                                            <div className="w-16 text-[10px] font-extrabold text-slate-400 uppercase pt-1 text-right tabular-nums">{timeEmojis[event.time]} {event.time}</div>
+                                                            <div className={`flex-1 p-3 rounded-xl text-sm border transition-all duration-300 hover:shadow-md ${getTypeColor(event.type)}`}>
                                                                 <div className="font-medium">{event.activity}</div>
                                                                 {event.reservationTime && (
                                                                     <div className="mt-2 pt-1 border-t border-black/10 text-xs font-bold opacity-90 flex items-center gap-1">
@@ -286,18 +389,18 @@
 
                         {activeTab === 'food' && (
                             <div className="animate-fade-in">
-                                <div className="bg-orange-50 rounded-2xl p-6 border border-orange-100 shadow-lg">
+                                <div className="bg-gradient-to-br from-coral-50 to-orange-50 rounded-2xl p-6 border border-coral-200 card-shadow-lg">
                                     <div className="flex items-center gap-3 mb-6">
-                                        <div className="bg-orange-500 text-white p-2 rounded-lg"><Icons.Utensils className="w-5 h-5" /></div>
-                                        <div><h2 className="text-xl font-bold text-slate-800">Must Eats</h2><p className="text-orange-600 text-sm font-medium">Extra Credit Missions</p></div>
+                                        <div className="bg-gradient-to-br from-coral-500 to-coral-600 text-white p-2.5 rounded-xl" style={{ boxShadow: '0 4px 6px -1px rgba(251, 113, 82, 0.25)' }}><Icons.Utensils className="w-5 h-5" /></div>
+                                        <div><h2 className="font-display text-2xl font-extrabold text-slate-800" style={{ letterSpacing: '-0.02em' }}>Must Eats</h2><p className="text-coral-600 text-sm font-semibold">Extra Credit Missions</p></div>
                                     </div>
                                     <ul className="space-y-3">
                                         {extras.food.map((item, idx) => (
-                                            <li key={idx} className="flex items-start gap-3 bg-white p-4 rounded-xl border border-orange-100 transition-transform active:scale-95 duration-200 ease-out">
+                                            <li key={idx} className="flex items-start gap-3 bg-white/90 p-4 rounded-xl border border-coral-200 transition-all active:scale-[0.98] duration-300 ease-out hover:shadow-md hover:border-coral-300">
                                                 <div className="flex flex-col gap-0.5">
                                                     <span className="text-slate-800 font-bold text-lg leading-tight">{item.name}</span>
-                                                    <span className="text-slate-500 font-medium text-sm">{item.genre}</span>
-                                                    <span className="text-xs text-orange-500 font-bold uppercase tracking-wide mt-1">{item.location}</span>
+                                                    <span className="text-slate-600 font-medium text-sm">{item.genre}</span>
+                                                    <span className="text-xs text-coral-600 font-extrabold uppercase tracking-wide mt-1">{item.location}</span>
                                                 </div>
                                             </li>
                                         ))}
@@ -305,7 +408,8 @@
                                     <div className="mt-6 text-center">
                                         <button
                                             onClick={addDimSum}
-                                            className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transform active:scale-95 transition-all duration-200 flex items-center gap-2 mx-auto"
+                                            className="bg-gradient-to-r from-coral-500 to-coral-600 hover:from-coral-600 hover:to-coral-700 text-white font-bold py-3 px-6 rounded-full transform active:scale-95 transition-all duration-300 flex items-center gap-2 mx-auto"
+                                            style={{ boxShadow: '0 4px 12px -2px rgba(251, 113, 82, 0.4)' }}
                                         >
                                             <span>🥟</span> Moar Dim Sum
                                         </button>
@@ -316,18 +420,18 @@
 
                         {activeTab === 'shopping' && (
                             <div className="animate-fade-in">
-                                <div className="bg-blue-50 rounded-2xl p-6 border border-blue-100 shadow-lg">
+                                <div className="bg-gradient-to-br from-ocean-50 to-blue-50 rounded-2xl p-6 border border-ocean-200 card-shadow-lg">
                                     <div className="flex items-center gap-3 mb-6">
-                                        <div className="bg-blue-600 text-white p-2 rounded-lg"><Icons.ShoppingBag className="w-5 h-5" /></div>
-                                        <div><h2 className="text-xl font-bold text-slate-800">Shopping</h2><p className="text-blue-600 text-sm font-medium">Bags & Streetwear</p></div>
+                                        <div className="bg-gradient-to-br from-ocean-500 to-ocean-600 text-white p-2.5 rounded-xl" style={{ boxShadow: '0 4px 6px -1px rgba(59, 130, 246, 0.25)' }}><Icons.ShoppingBag className="w-5 h-5" /></div>
+                                        <div><h2 className="font-display text-2xl font-extrabold text-slate-800" style={{ letterSpacing: '-0.02em' }}>Shopping</h2><p className="text-ocean-600 text-sm font-semibold">Bags & Streetwear</p></div>
                                     </div>
                                     <ul className="space-y-3">
                                         {extras.shopping.map((item, idx) => (
-                                            <li key={idx} className="flex items-start gap-3 bg-white p-4 rounded-xl border border-blue-100 transition-transform active:scale-95 duration-200 ease-out">
+                                            <li key={idx} className="flex items-start gap-3 bg-white/90 p-4 rounded-xl border border-ocean-200 transition-all active:scale-[0.98] duration-300 ease-out hover:shadow-md hover:border-ocean-300">
                                                 <div className="flex flex-col gap-0.5">
                                                     <span className="text-slate-800 font-bold text-lg leading-tight">{item.name}</span>
-                                                    <span className="text-slate-500 font-medium text-sm">{item.genre}</span>
-                                                    <span className="text-xs text-blue-500 font-bold uppercase tracking-wide mt-1">{item.location}</span>
+                                                    <span className="text-slate-600 font-medium text-sm">{item.genre}</span>
+                                                    <span className="text-xs text-ocean-600 font-extrabold uppercase tracking-wide mt-1">{item.location}</span>
                                                 </div>
                                             </li>
                                         ))}
@@ -337,54 +441,54 @@
                         )}
                         {activeTab === 'phrases' && (
                             <div className="grid md:grid-cols-2 gap-6 animate-fade-in">
-                                <div className="bg-emerald-50 rounded-2xl p-6 border border-emerald-100 shadow-lg">
-                                    <h2 className="text-xl font-bold text-slate-800 mb-4">Essential Greetings</h2>
+                                <div className="bg-gradient-to-br from-jade-50 to-emerald-50 rounded-2xl p-6 border border-jade-200 card-shadow-lg">
+                                    <h2 className="font-display text-2xl font-extrabold text-slate-800 mb-4" style={{ letterSpacing: '-0.02em' }}>Essential Greetings</h2>
                                     <div className="space-y-3">
-                                        <div className="bg-white p-3 rounded-xl border border-emerald-100 shadow-lg flex justify-between items-center transition-transform active:scale-95 duration-200 ease-out">
-                                            <div><span className="block font-bold text-slate-700">Hello</span><span className="text-xs text-slate-400">Lei Hou</span></div>
-                                            <div className="text-xl">你好</div>
+                                        <div className="bg-white/90 p-3 rounded-xl border border-jade-200 flex justify-between items-center transition-all active:scale-[0.98] duration-300 ease-out hover:shadow-md hover:border-jade-300">
+                                            <div><span className="block font-bold text-slate-700">Hello</span><span className="text-xs text-slate-400 font-medium">Lei Hou</span></div>
+                                            <div className="font-chinese text-xl font-bold">你好</div>
                                         </div>
-                                        <div className="bg-white p-3 rounded-xl border border-emerald-100 shadow-lg flex justify-between items-center transition-transform active:scale-95 duration-200 ease-out">
-                                            <div><span className="block font-bold text-slate-700">Thank You (Service)</span><span className="text-xs text-slate-400">M Goi</span></div>
-                                            <div className="text-xl">唔該</div>
+                                        <div className="bg-white/90 p-3 rounded-xl border border-jade-200 flex justify-between items-center transition-all active:scale-[0.98] duration-300 ease-out hover:shadow-md hover:border-jade-300">
+                                            <div><span className="block font-bold text-slate-700">Thank You (Service)</span><span className="text-xs text-slate-400 font-medium">M Goi</span></div>
+                                            <div className="font-chinese text-xl font-bold">唔該</div>
                                         </div>
-                                        <div className="bg-white p-3 rounded-xl border border-emerald-100 shadow-lg flex justify-between items-center transition-transform active:scale-95 duration-200 ease-out">
-                                            <div><span className="block font-bold text-slate-700">Thank You (Gift)</span><span className="text-xs text-slate-400">Do Jeh</span></div>
-                                            <div className="text-xl">多謝</div>
+                                        <div className="bg-white/90 p-3 rounded-xl border border-jade-200 flex justify-between items-center transition-all active:scale-[0.98] duration-300 ease-out hover:shadow-md hover:border-jade-300">
+                                            <div><span className="block font-bold text-slate-700">Thank You (Gift)</span><span className="text-xs text-slate-400 font-medium">Do Jeh</span></div>
+                                            <div className="font-chinese text-xl font-bold">多謝</div>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="bg-purple-50 rounded-2xl p-6 border border-purple-100 shadow-lg">
-                                    <h2 className="text-xl font-bold text-slate-800 mb-4">Dining & Shopping</h2>
+                                <div className="bg-gradient-to-br from-purple-50 to-fuchsia-50 rounded-2xl p-6 border border-purple-200 card-shadow-lg">
+                                    <h2 className="font-display text-2xl font-extrabold text-slate-800 mb-4" style={{ letterSpacing: '-0.02em' }}>Dining & Shopping</h2>
                                     <div className="space-y-3">
-                                        <div className="bg-white p-3 rounded-xl border border-purple-100 shadow-lg flex justify-between items-center transition-transform active:scale-95 duration-200 ease-out">
-                                            <div><span className="block font-bold text-slate-700">Delicious</span><span className="text-xs text-slate-400">Hou Sik</span></div>
-                                            <div className="text-xl">好食</div>
+                                        <div className="bg-white/90 p-3 rounded-xl border border-purple-200 flex justify-between items-center transition-all active:scale-[0.98] duration-300 ease-out hover:shadow-md hover:border-purple-300">
+                                            <div><span className="block font-bold text-slate-700">Delicious</span><span className="text-xs text-slate-400 font-medium">Hou Sik</span></div>
+                                            <div className="font-chinese text-xl font-bold">好食</div>
                                         </div>
-                                        <div className="bg-white p-3 rounded-xl border border-purple-100 shadow-lg flex justify-between items-center transition-transform active:scale-95 duration-200 ease-out">
-                                            <div><span className="block font-bold text-slate-700">Bill Please</span><span className="text-xs text-slate-400">Mai Dan</span></div>
-                                            <div className="text-xl">埋單</div>
+                                        <div className="bg-white/90 p-3 rounded-xl border border-purple-200 flex justify-between items-center transition-all active:scale-[0.98] duration-300 ease-out hover:shadow-md hover:border-purple-300">
+                                            <div><span className="block font-bold text-slate-700">Bill Please</span><span className="text-xs text-slate-400 font-medium">Mai Dan</span></div>
+                                            <div className="font-chinese text-xl font-bold">埋單</div>
                                         </div>
-                                        <div className="bg-white p-3 rounded-xl border border-purple-100 shadow-lg flex justify-between items-center transition-transform active:scale-95 duration-200 ease-out">
-                                            <div><span className="block font-bold text-slate-700">How Much?</span><span className="text-xs text-slate-400">Gei Do Chin</span></div>
-                                            <div className="text-xl">幾多錢</div>
+                                        <div className="bg-white/90 p-3 rounded-xl border border-purple-200 flex justify-between items-center transition-all active:scale-[0.98] duration-300 ease-out hover:shadow-md hover:border-purple-300">
+                                            <div><span className="block font-bold text-slate-700">How Much?</span><span className="text-xs text-slate-400 font-medium">Gei Do Chin</span></div>
+                                            <div className="font-chinese text-xl font-bold">幾多錢</div>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="bg-stone-200 rounded-2xl p-6 border border-stone-300 shadow-lg">
-                                    <h2 className="text-xl font-bold text-slate-800 mb-4">Poop</h2>
+                                <div className="bg-gradient-to-br from-stone-100 to-stone-200 rounded-2xl p-6 border border-stone-300 card-shadow-lg">
+                                    <h2 className="font-display text-2xl font-extrabold text-slate-800 mb-4" style={{ letterSpacing: '-0.02em' }}>Poop</h2>
                                     <div className="space-y-3">
-                                        <div className="bg-white p-3 rounded-xl border border-stone-200 shadow-lg flex justify-between items-center transition-transform active:scale-95 duration-200 ease-out">
-                                            <div><span className="block font-bold text-slate-700">Pooping</span><span className="text-xs text-slate-400">Aw See</span></div>
-                                            <div className="text-xl">痾屎</div>
+                                        <div className="bg-white/90 p-3 rounded-xl border border-stone-300 flex justify-between items-center transition-all active:scale-[0.98] duration-300 ease-out hover:shadow-md hover:border-stone-400">
+                                            <div><span className="block font-bold text-slate-700">Pooping</span><span className="text-xs text-slate-400 font-medium">Aw See</span></div>
+                                            <div className="font-chinese text-xl font-bold">痾屎</div>
                                         </div>
-                                        <div className="bg-white p-3 rounded-xl border border-stone-200 shadow-lg flex justify-between items-center transition-transform active:scale-95 duration-200 ease-out">
-                                            <div><span className="block font-bold text-slate-700">Eat Shit! (Anger)</span><span className="text-xs text-slate-400">Sik See</span></div>
-                                            <div className="text-xl">食屎</div>
+                                        <div className="bg-white/90 p-3 rounded-xl border border-stone-300 flex justify-between items-center transition-all active:scale-[0.98] duration-300 ease-out hover:shadow-md hover:border-stone-400">
+                                            <div><span className="block font-bold text-slate-700">Eat Shit! (Anger)</span><span className="text-xs text-slate-400 font-medium">Sik See</span></div>
+                                            <div className="font-chinese text-xl font-bold">食屎</div>
                                         </div>
-                                        <div className="bg-white p-3 rounded-xl border border-stone-200 shadow-lg flex justify-between items-center transition-transform active:scale-95 duration-200 ease-out">
-                                            <div><span className="block font-bold text-slate-700">Pooping Pants</span><span className="text-xs text-slate-400">Lai See</span></div>
-                                            <div className="text-xl">賴屎</div>
+                                        <div className="bg-white/90 p-3 rounded-xl border border-stone-300 flex justify-between items-center transition-all active:scale-[0.98] duration-300 ease-out hover:shadow-md hover:border-stone-400">
+                                            <div><span className="block font-bold text-slate-700">Pooping Pants</span><span className="text-xs text-slate-400 font-medium">Lai See</span></div>
+                                            <div className="font-chinese text-xl font-bold">賴屎</div>
                                         </div>
                                     </div>
                                 </div>
@@ -392,18 +496,18 @@
                         )}
                         {activeTab === 'address' && (
                             <div className="animate-fade-in flex flex-col items-center justify-center min-h-[50vh] text-center space-y-8">
-                                <div className="p-8 bg-white rounded-3xl shadow-lg border border-slate-100 w-full max-w-md">
-                                    <div className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-2">Address</div>
-                                    <h2 className="text-4xl font-black text-slate-900 mb-4 leading-tight">Middle Road<br />TST</h2>
-                                    <div className="h-px w-20 bg-slate-200 mx-auto my-6"></div>
-                                    <h2 className="text-4xl font-black text-slate-900 leading-tight">尖沙咀<br />中間道</h2>
+                                <div className="p-8 bg-white rounded-3xl border border-slate-200 w-full max-w-md card-shadow-lg">
+                                    <div className="text-sm font-extrabold text-slate-400 uppercase tracking-widest mb-3">Address</div>
+                                    <h2 className="font-display text-4xl font-black text-slate-900 mb-4 leading-tight" style={{ letterSpacing: '-0.03em' }}>Middle Road<br />TST</h2>
+                                    <div className="h-px w-20 bg-gradient-to-r from-transparent via-slate-300 to-transparent mx-auto my-6"></div>
+                                    <h2 className="font-chinese text-4xl font-black text-slate-900 leading-tight">尖沙咀<br />中間道</h2>
                                 </div>
                             </div>
                         )}
                     </main>
 
 
-                    <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t border-gray-200/50 px-6 py-2 pb-safe z-40 flex justify-between items-center shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+                    <div className="md:hidden fixed bottom-0 left-0 right-0 glass-effect border-t border-gray-200/50 px-6 py-2 pb-safe z-40 flex justify-between items-center" style={{ boxShadow: '0 -4px 6px -1px rgba(0, 0, 0, 0.05)' }}>
                         {[
                             { id: 'schedule', icon: Icons.Calendar, label: 'Schedule' },
                             { id: 'food', icon: Icons.Utensils, label: 'Food' },
@@ -414,10 +518,10 @@
                             <button
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
-                                className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all ${activeTab === tab.id ? 'text-slate-800' : 'text-slate-400 hover:bg-gray-50'}`}
+                                className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all duration-300 ${activeTab === tab.id ? 'text-slate-800' : 'text-slate-400 hover:bg-slate-100 hover:text-slate-600'}`}
                             >
-                                <tab.icon className={`w-6 h-6 ${activeTab === tab.id ? 'stroke-[2.5px]' : 'stroke-2'}`} />
-                                <span className={`text-[10px] font-medium ${activeTab === tab.id ? 'font-bold' : ''}`}>{tab.label}</span>
+                                <tab.icon className={`w-6 h-6 transition-all ${activeTab === tab.id ? 'stroke-[2.5px]' : 'stroke-2'}`} />
+                                <span className={`text-[10px] font-medium transition-all ${activeTab === tab.id ? 'font-extrabold' : ''}`}>{tab.label}</span>
                             </button>
                         ))}
                     </div>
