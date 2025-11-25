@@ -199,9 +199,12 @@
                     ))}
                     <header className="bg-white/80 backdrop-blur-md border-b border-gray-200/50 sticky top-0 z-30 shadow-sm safe-top">
                         <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                                <div className="bg-red-600 text-white p-1.5 rounded-lg font-bold text-lg">HK 香港</div>
-                                <h1 className="font-bold text-xl tracking-tight">Trip 2025</h1>
+                            <div className="flex items-center gap-3">
+                                <div className="bg-slate-900 text-white w-10 h-10 rounded-xl flex items-center justify-center font-black text-sm shadow-md">HK</div>
+                                <div className="flex flex-col justify-center">
+                                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400 leading-none mb-0.5">Trip Dashboard</span>
+                                    <span className="font-bold text-lg text-slate-900 tracking-tight leading-none">Hong Kong '25</span>
+                                </div>
                             </div>
                             <nav className="hidden md:flex gap-2">
                                 {['schedule', 'food', 'shopping', 'phrases', 'address'].map((tab) => (
