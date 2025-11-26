@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HK Trip 2025 | Neon Edition</title>
+    <link rel="icon" type="image/png" href="icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800;900&family=Noto+Sans+SC:wght@400;700;900&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                        chinese: ['Noto Sans SC', 'sans-serif']
+                    },
+                    colors: {
+                        neon: {
+                            blue: '#00f3ff',
+                            pink: '#ff00ff',
+                            purple: '#bd00ff',
+                            dark: '#0a0a12',
+                            surface: '#1a1a24'
+                        }
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                        'glass': 'linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%)',
+                        'glass-active': 'linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)'
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+
+    <style>
+        body {
+            background-color: #050508;
+            color: #ffffff;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0a12;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .glass-panel {
+            background: rgba(20, 20, 30, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .glass-nav {
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+        }
+
+        .text-glow-pink {
+            text-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+        }
+
+        .neon-border {
+            position: relative;
+        }
+
+        .neon-border::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #00f3ff, transparent);
+            opacity: 0.5;
+        }
+
+        /* Animation utilities */
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo } = React;
+
+        // --- Icons ---
+        const Icons = {
+            Calendar: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2" /><line x1="16" x2="16" y1="2" y2="6" /><line x1="8" x2="8" y1="2" y2="6" /><line x1="3" x2="21" y1="10" y2="10" /></svg>,
+            Utensils: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" /><path d="M7 2v20" /><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" /></svg>,
+            ShoppingBag: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" /><path d="M3 6h18" /><path d="M16 10a4 4 0 0 1-8 0" /></svg>,
+            MessageCircle: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" /></svg>,
+            MapPin: () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>,
+            ChevronDown: ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m6 9 6 6 6-6" /></svg>,
+            Clock: () => <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
+        };
+
+        // --- Data ---
+        const SCHEDULE_DATA = [
+            {
+                day: 1, date: '16', month: 'DEC', weekday: 'Tuesday',
+                events: [
+                    { time: 'AM', activity: 'Davis Crew Arrives', type: 'travel' },
+                    { time: 'Lunch', activity: 'Free Time / Check-in', type: 'leisure' },
+                    { time: 'PM', activity: 'San Diego Squad arrives', type: 'travel' },
+                    { time: 'Dinner', activity: 'Welcome Dinner', type: 'food' },
+                ]
+            },
+            {
+                day: 2, date: '17', month: 'DEC', weekday: 'Wednesday',
+                events: [
+                    { time: 'Lunch', activity: 'Cafe 103 Buffet', reservation: '12:00 PM', type: 'food', highlight: true },
+                    { time: 'PM', activity: 'Mong Kok/TST Exploration', type: 'leisure' },
+                    { time: 'Evening', activity: 'Avenue of Stars', type: 'sightseeing' },
+                ]
+            },
+            {
+                day: 3, date: '18', month: 'DEC', weekday: 'Thursday',
+                events: [
+                    { time: 'AM', activity: 'Victoria Peak', reservation: '7:30 AM', type: 'sightseeing', highlight: true },
+                    { time: 'Lunch', activity: 'Mira Dim Sum', reservation: '12:30 PM', type: 'food', highlight: true },
+                    { time: 'Evening', activity: 'Temple Street Night Market', type: 'sightseeing' },
+                ]
+            },
+            {
+                day: 4, date: '19', month: 'DEC', weekday: 'Friday',
+                events: [
+                    { time: 'AM', activity: 'Monastery', reservation: '10:00 AM', type: 'sightseeing', highlight: true },
+                    { time: 'Lunch', activity: 'Tai Po Market Lunch', type: 'food' },
+                    { time: 'PM', activity: 'Lam Tsuen Village', type: 'sightseeing' },
+                ]
+            },
+            {
+                day: 5, date: '20', month: 'DEC', weekday: 'Saturday',
+                events: [
+                    { time: 'Lunch', activity: 'Tai Wai Dining Room', type: 'food', highlight: true },
+                    { time: 'Dinner', activity: 'Hot Pot Night', type: 'food' },
+                ]
+            },
+            {
+                day: 6, date: '21', month: 'DEC', weekday: 'Sunday',
+                events: [
+                    { time: 'AM', activity: 'Packing & Checkout', type: 'leisure' },
+                    { time: 'PM', activity: 'Depart', type: 'travel' },
+                ]
+            }
+        ];
+
+        const FOOD_DATA = [
+            { name: "Din Tai Fung", genre: "XLB (Soup Dumplings)", location: "Causeway Bay / TST", tags: ["Must Try"] },
+            { name: "All Day Chicken Lab", genre: "Hainan Chicken Rice", location: "Mong Kok", tags: ["Local"] },
+            { name: "Mak's Noodles", genre: "Wonton Noodle Soup", location: "TST", tags: ["Classic"] },
+            { name: "Classic Cha Chan Teng", genre: "Hong Kong Style Cafe", location: "Anywhere", tags: ["Breakfast"] },
+            { name: "Lau Fau Shan", genre: "Fresh Seafood Market", location: "New Territories", tags: ["Experience"] }
+        ];
+
+        const SHOPPING_DATA = [
+            { name: "Feverguy", genre: "Wotencraft / Camera Bags", location: "10 Pak Sha Road (CWB)" },
+            { name: "LAKH Supply", genre: "Utility Wear / Cargo Pants", location: "59 Russell St (CWB) / Gala Place (Mong Kok)" },
+            { name: "Hellolulu", genre: "Lifestyle Bags", location: "APM (Kwun Tong) / T.O.P (Mong Kok)" },
+            { name: "The Forest", genre: "Sneakers & Streetwear Hub", location: "17 Nelson St (Mong Kok)" },
+            { name: "Topologie", genre: "Phone Straps & Bags", location: "K11 Musea (TST) / Langham Place (Mong Kok)" },
+            { name: "Doughnut Bags", genre: "Backpacks & Luggage", location: "68 Fuk Wa St (SSP) / Langham Place (Mong Kok)" },
+            { name: "Golden Computer Arcade", genre: "Tech & Gaming", location: "Sham Shui Po" },
+            { name: "Sim City", genre: "Cameras & Photography", location: "Mong Kok" }
+        ];
+
+        const PHRASES_DATA = [
+            {
+                category: "Essentials", items: [
+                    { en: "Hello", cantonese: "Lei Hou", char: "你好" },
+                    { en: "Thank You (Service)", cantonese: "M Goi", char: "唔該" },
+                    { en: "Thank You (Gift)", cantonese: "Do Jeh", char: "多謝" }
+                ]
+            },
+            {
+                category: "Dining & Shopping", items: [
+                    { en: "Delicious", cantonese: "Hou Sik", char: "好食" },
+                    { en: "Bill Please", cantonese: "Mai Dan", char: "埋單" },
+                    { en: "How Much?", cantonese: "Gei Do Chin", char: "幾多錢" }
+                ]
+            },
+            {
+                category: "Poop", items: [
+                    { en: "Pooping", cantonese: "Aw See", char: "痾屎" },
+                    { en: "Eat Shit! (Anger)", cantonese: "Sik See", char: "食屎" },
+                    { en: "Pooping Pants", cantonese: "Lai See", char: "賴屎" }
+                ]
+            }
+        ];
+
+        // --- Components ---
+
+        const TabButton = ({ active, onClick, icon: Icon, label }) => (
+            <button
+                onClick={onClick}
+                className={`flex flex-col items-center justify-center w-full py-3 transition-all duration-300 ${active ? 'text-neon-blue' : 'text-gray-500 hover:text-gray-300'}`}
+            >
+                <div className={`transition-all duration-300 ${active ? 'transform -translate-y-1 scale-110 drop-shadow-[0_0_8px_rgba(0,243,255,0.5)]' : ''}`}>
+                    <Icon />
+                </div>
+                <span className={`text-[10px] mt-1 font-medium tracking-wide ${active ? 'opacity-100' : 'opacity-0 hidden'}`}>
+                    {label}
+                </span>
+            </button>
+        );
+
+        const Header = () => (
+            <div className="pt-12 pb-6 px-6">
+                <div className="flex items-center justify-between">
+                    <div>
+                        <div className="flex items-center gap-2 mb-1">
+                            <span className="px-2 py-0.5 rounded bg-neon-pink/20 text-neon-pink text-[10px] font-bold tracking-wider border border-neon-pink/30">HK TRIP</span>
+                            <span className="text-gray-400 text-xs font-medium tracking-widest uppercase">Dec 16-21</span>
+                        </div>
+                        <h1 className="font-display text-4xl font-black text-white leading-none tracking-tight text-glow">
+                            Hong Kong <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-blue to-neon-purple">2025</span>
+                        </h1>
+                    </div>
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-neon-blue to-neon-purple p-[2px] animate-float">
+                        <div className="w-full h-full rounded-full bg-black flex items-center justify-center overflow-hidden">
+                            <span className="text-xl">🇭🇰</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+
+        const ScheduleCard = ({ day, isExpanded, onToggle }) => {
+            const getEventStyle = (event) => {
+                const isBlank = !event.activity || event.activity.trim() === '' || event.activity === '-';
+                const isTravel = event.type === 'travel';
+                const isMeal = event.type === 'food' || event.time === 'Lunch' || event.time === 'Dinner';
+
+                if (isBlank || isTravel) return {
+                    dot: 'bg-gray-600',
+                    border: 'border-white/5 bg-white/5',
+                    text: 'text-gray-400'
+                };
+
+                if (isMeal) return {
+                    dot: 'bg-neon-pink shadow-[0_0_8px_rgba(255,0,255,0.8)]',
+                    border: 'border-neon-pink/30 bg-neon-pink/10',
+                    text: 'text-neon-pink'
+                };
+
+                // Default / Activities (Blue)
+                return {
+                    dot: 'bg-neon-blue shadow-[0_0_8px_rgba(0,243,255,0.8)]',
+                    border: 'border-neon-blue/30 bg-neon-blue/10',
+                    text: 'text-neon-blue'
+                };
+            };
+
+            return (
+                <div className={`glass-panel rounded-2xl overflow-hidden transition-all duration-500 ${isExpanded ? 'ring-1 ring-neon-blue/50' : 'opacity-90'}`}>
+                    <div
+                        onClick={onToggle}
+                        className="p-4 flex items-center justify-between cursor-pointer active:bg-white/5"
+                    >
+                        <div className="flex items-center gap-4">
+                            <div className={`flex flex-col items-center justify-center w-12 h-12 rounded-xl border ${isExpanded ? 'bg-neon-blue/10 border-neon-blue text-neon-blue' : 'bg-white/5 border-white/10 text-gray-400'}`}>
+                                <span className="text-[10px] font-bold uppercase">{day.month}</span>
+                                <span className="text-xl font-display font-bold leading-none">{day.date}</span>
+                            </div>
+                            <div>
+                                <h3 className={`font-bold text-lg ${isExpanded ? 'text-white' : 'text-gray-300'}`}>{day.weekday}</h3>
+                                <p className="text-xs text-gray-500 font-medium">{day.events.length} Activities</p>
+                            </div>
+                        </div>
+                        <Icons.ChevronDown className={`w-5 h-5 text-gray-500 transition-transform duration-300 ${isExpanded ? 'rotate-180 text-neon-blue' : ''}`} />
+                    </div>
+
+                    <div className={`transition-all duration-500 ease-in-out overflow-hidden ${isExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                        <div className="px-4 pb-4 pt-0 space-y-3">
+                            <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent mb-4"></div>
+                            {day.events.map((event, idx) => {
+                                const style = getEventStyle(event);
+                                return (
+                                    <div key={idx} className="flex gap-3 relative group">
+                                        <div className="w-12 pt-1 flex flex-col items-end">
+                                            <span className="text-xs font-bold text-gray-400">{event.time}</span>
+                                        </div>
+
+                                        {/* Timeline line */}
+                                        <div className="absolute left-[54px] top-2 bottom-[-12px] w-[2px] bg-white/5 group-last:hidden"></div>
+
+                                        <div className="relative z-10 pt-1.5">
+                                            <div className={`w-2 h-2 rounded-full ${style.dot}`}></div>
+                                        </div>
+
+                                        <div className={`flex-1 p-3 rounded-xl border ${style.border}`}>
+                                            <div className="font-medium text-sm text-gray-200">{event.activity}</div>
+                                            {event.reservation && (
+                                                <div className={`flex items-center gap-1.5 mt-2 text-xs font-bold ${style.text}`}>
+                                                    <Icons.Clock />
+                                                    <span>{event.reservation}</span>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const FoodCard = ({ item }) => (
+            <div className="glass-panel p-4 rounded-2xl relative overflow-hidden group">
+                <div className="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <Icons.Utensils />
+                </div>
+                <div className="flex flex-wrap gap-1 mb-2">
+                    {item.tags.map(tag => (
+                        <span key={tag} className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-white/10 text-gray-300 uppercase tracking-wide">{tag}</span>
+                    ))}
+                </div>
+                <h3 className="font-display font-bold text-lg text-white mb-0.5">{item.name}</h3>
+                <p className="text-sm text-neon-blue mb-2">{item.genre}</p>
+                <div className="flex items-center gap-1 text-xs text-gray-500">
+                    <Icons.MapPin />
+                    {item.location}
+                </div>
+            </div>
+        );
+
+        const ShoppingCard = ({ item }) => (
+            <div className="glass-panel p-4 rounded-2xl border-l-2 border-l-neon-purple">
+                <h3 className="font-bold text-white">{item.name}</h3>
+                <p className="text-xs text-gray-400 mt-0.5">{item.genre}</p>
+                <div className="mt-2 text-[10px] font-bold text-neon-purple uppercase tracking-wider">{item.location}</div>
+            </div>
+        );
+
+        const PhraseCard = ({ item }) => (
+            <div className="glass-panel p-3 rounded-xl flex items-center justify-between active:scale-[0.98] transition-transform">
+                <div>
+                    <div className="font-bold text-white text-sm">{item.en}</div>
+                    <div className="text-xs text-gray-500">{item.cantonese}</div>
+                </div>
+                <div className="font-chinese text-xl font-bold text-neon-blue">{item.char}</div>
+            </div>
+        );
+
+        const AddressView = () => (
+            <div className="flex flex-col items-center justify-center h-[60vh] px-6 text-center">
+                <div className="glass-panel p-8 rounded-3xl w-full max-w-sm border border-neon-blue/30 relative overflow-hidden">
+                    <div className="absolute -top-10 -right-10 w-32 h-32 bg-neon-blue/20 rounded-full blur-2xl"></div>
+                    <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-neon-purple/20 rounded-full blur-2xl"></div>
+
+                    <div className="relative z-10">
+                        <div className="w-12 h-12 mx-auto bg-white/10 rounded-full flex items-center justify-center mb-4 text-neon-blue">
+                            <Icons.MapPin />
+                        </div>
+                        <h2 className="text-xs font-bold text-gray-400 uppercase tracking-[0.2em] mb-4">Hotel Address</h2>
+
+                        <div className="space-y-6">
+                            <div>
+                                <p className="font-display text-3xl font-black text-white leading-tight">Middle Road</p>
+                                <p className="font-display text-2xl font-bold text-gray-400">Tsim Sha Tsui</p>
+                            </div>
+
+                            <div className="w-16 h-1 bg-gradient-to-r from-neon-blue to-neon-purple mx-auto rounded-full"></div>
+
+                            <div>
+                                <p className="font-chinese text-4xl font-black text-white mb-1">尖沙咀</p>
+                                <p className="font-chinese text-3xl font-bold text-gray-300">中間道</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p className="mt-8 text-gray-500 text-xs max-w-[200px]">Show this card to the taxi driver if you get lost.</p>
+            </div>
+        );
+
+        const App = () => {
+            const [activeTab, setActiveTab] = useState('schedule');
+            const [expandedDays, setExpandedDays] = useState([1, 2, 3, 4, 5, 6]); // All days expanded by default
+            const [dimSums, setDimSums] = useState([]);
+
+            const toggleDay = (dayId) => {
+                setExpandedDays(prev =>
+                    prev.includes(dayId)
+                        ? prev.filter(id => id !== dayId)
+                        : [...prev, dayId]
+                );
+            };
+
+            const spawnDimSum = () => {
+                const id = Date.now();
+                const emojis = ['🥟', '🍤', '🫖', '🍵', '🍮', '🍜', '🥬', '🍗', '🍚', '🍲', '🦑', '🦀'];
+                const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+
+                const style = {
+                    left: `${Math.floor(Math.random() * 80) + 10}%`,
+                    top: `${Math.floor(Math.random() * 80) + 10}%`,
+                    transform: `rotate(${Math.floor(Math.random() * 360)}deg)`,
+                    fontSize: `${Math.random() * 2 + 2}rem`
+                };
+
+                setDimSums(prev => [...prev, { id, emoji, style }]);
+
+                setTimeout(() => {
+                    setDimSums(prev => prev.filter(d => d.id !== id));
+                }, 2000);
+            };
+
+            const renderContent = () => {
+                switch (activeTab) {
+                    case 'schedule':
+                        return (
+                            <div className="space-y-4 pb-24 px-4 animate-float-in">
+                                {SCHEDULE_DATA.map((day) => (
+                                    <ScheduleCard
+                                        key={day.day}
+                                        day={day}
+                                        isExpanded={expandedDays.includes(day.day)}
+                                        onToggle={() => toggleDay(day.day)}
+                                    />
+                                ))}
+                            </div>
+                        );
+                    case 'food':
+                        return (
+                            <div className="px-4 pb-24 space-y-4">
+                                <div className="grid grid-cols-1 gap-4">
+                                    {FOOD_DATA.map((item, i) => <FoodCard key={i} item={item} />)}
+                                </div>
+                                <button
+                                    onClick={spawnDimSum}
+                                    className="w-full py-4 rounded-xl bg-gradient-to-r from-neon-blue to-neon-purple text-black font-bold uppercase tracking-wider shadow-[0_0_20px_rgba(0,243,255,0.3)] active:scale-95 transition-transform"
+                                >
+                                    I'm Hungry!
+                                </button>
+                            </div>
+                        );
+                    case 'shopping':
+                        return (
+                            <div className="px-4 pb-24 grid grid-cols-2 gap-3">
+                                {SHOPPING_DATA.map((item, i) => <ShoppingCard key={i} item={item} />)}
+                            </div>
+                        );
+                    case 'phrases':
+                        return (
+                            <div className="px-4 pb-24 space-y-6">
+                                {PHRASES_DATA.map((category, i) => (
+                                    <div key={i}>
+                                        <h3 className="text-neon-pink font-bold text-sm uppercase tracking-wider mb-3 ml-1">{category.category}</h3>
+                                        <div className="space-y-2">
+                                            {category.items.map((item, j) => <PhraseCard key={j} item={item} />)}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        );
+                    case 'address':
+                        return <AddressView />;
+                    default:
+                        return null;
+                }
+            };
+
+            return (
+                <div className="min-h-screen relative overflow-hidden bg-[#050508]">
+                    {/* Background Gradients */}
+                    <div className="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+                        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-neon-blue/10 blur-[100px]"></div>
+                        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-neon-purple/10 blur-[100px]"></div>
+                    </div>
+
+                    {/* Floating Dim Sums */}
+                    {dimSums.map(ds => (
+                        <div
+                            key={ds.id}
+                            className="fixed z-50 animate-bounce pointer-events-none transition-opacity duration-500"
+                            style={{
+                                ...ds.style,
+                                animation: 'bounce 1s infinite'
+                            }}
+                        >
+                            {ds.emoji}
+                        </div>
+                    ))}
+
+                    <div className="relative z-10 max-w-md mx-auto min-h-screen flex flex-col">
+                        <Header />
+
+                        <main className="flex-1">
+                            {renderContent()}
+                        </main>
+
+                        {/* Bottom Navigation */}
+                        <div className="fixed bottom-0 left-0 right-0 z-50">
+                            <div className="max-w-md mx-auto">
+                                <div className="glass-nav px-2 pb-safe">
+                                    <div className="flex justify-between items-center">
+                                        <TabButton
+                                            active={activeTab === 'schedule'}
+                                            onClick={() => setActiveTab('schedule')}
+                                            icon={Icons.Calendar}
+                                            label="Plan"
+                                        />
+                                        <TabButton
+                                            active={activeTab === 'food'}
+                                            onClick={() => setActiveTab('food')}
+                                            icon={Icons.Utensils}
+                                            label="Eats"
+                                        />
+                                        <TabButton
+                                            active={activeTab === 'shopping'}
+                                            onClick={() => setActiveTab('shopping')}
+                                            icon={Icons.ShoppingBag}
+                                            label="Shop"
+                                        />
+                                        <TabButton
+                                            active={activeTab === 'phrases'}
+                                            onClick={() => setActiveTab('phrases')}
+                                            icon={Icons.MessageCircle}
+                                            label="Talk"
+                                        />
+                                        <TabButton
+                                            active={activeTab === 'address'}
+                                            onClick={() => setActiveTab('address')}
+                                            icon={Icons.MapPin}
+                                            label="Hotel"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+
+</html>
