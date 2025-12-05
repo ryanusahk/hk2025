@@ -171,7 +171,6 @@
                 day: 1, date: '16', month: 'DEC', weekday: 'Tuesday',
                 events: [
                     { time: 'AM', activity: 'Davis Crew Arrives', type: 'travel' },
-                    { time: 'Lunch', activity: 'Free Time / Check-in', type: 'leisure' },
                     { time: 'PM', activity: 'San Diego Squad arrives', type: 'travel' },
                     { time: 'Dinner', activity: '', type: 'leisure' },
                     { time: 'Evening', activity: '', type: 'leisure' },
@@ -396,9 +395,7 @@
                                     <span className="text-[10px] font-black uppercase">{day.month}</span>
                                     <span className="text-2xl font-display font-bold leading-none">{day.date}</span>
                                 </div>
-                                <div>
-                                    <h3 className="font-display font-bold text-2xl text-pencil">{day.weekday}</h3>
-                                </div>
+                                <h3 className="font-display font-bold text-2xl text-pencil leading-none pt-1">{day.weekday}</h3>
                             </div>
                             <div className={`transition-transform duration-300 border-2 border-pencil rounded-full p-1 ${isExpanded ? 'rotate-180 bg-accent-yellow' : 'bg-transparent'}`}>
                                 <Icons.ChevronDown className="w-5 h-5" />
@@ -523,7 +520,7 @@
                         <div className="w-full text-center text-pencil/20 font-bold text-xl my-2">~ or ~</div>
 
                         <div>
-                            <p className="font-chinese text-4xl font-bold text-pencil/80">香港尖沙咀</p>
+                            <p className="font-chinese text-4xl font-bold text-pencil/80">尖沙咀</p>
                             <p className="font-chinese text-5xl font-black text-pencil mb-2">中間道5-6號</p>
                         </div>
                     </div>
